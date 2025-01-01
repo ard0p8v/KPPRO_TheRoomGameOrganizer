@@ -23,7 +23,7 @@ public class Registration {
 
     @NotNull
     @ManyToOne
-    private User user;
+    private User player;
 
     @NotNull
     @ManyToOne
@@ -61,12 +61,12 @@ public class Registration {
         this.note = note;
     }
 
-    public User getUser() {
-        return user;
+    public User getPlayer() {
+        return player;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPlayer(User player) {
+        this.player = player;
     }
 
     public Tournament getTournament() {

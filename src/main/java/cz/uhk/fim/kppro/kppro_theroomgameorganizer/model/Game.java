@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Název hry musí být vyplněn!")
     private String title;
@@ -21,11 +21,11 @@ public class Game {
     @Max(value = 100)
     private int maxPlayers;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

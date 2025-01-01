@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>List of all Cars:</h1>
+
+<a th:href="@{'/game/create'}">CREATE NEW GAME</a>
+<br>
+
+<ul>
+
+    <li th:each="game: ${games}">
+        <a th:text="${game.title}" th:href="@{'/game/detail/' + ${game.id}}">
+
+        </a>
+    </li>
+
+</ul>
+
+</body>
+</html>

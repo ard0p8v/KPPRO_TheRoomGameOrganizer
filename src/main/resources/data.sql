@@ -1,0 +1,4 @@
+INSERT INTO games VALUES
+(1, 'Poker', 'Desková hra', 'Poker se hraje s balíčkem 52 karet.Ty se dělí na čtyři barvy, každá z nich obsahuje 13 hodnot.', 14),
+(2, 'Jednadvacet', 'Karetní hra', 'Hraje se s mariášovými kartami a oproti blackjacku a baccaratu se liší v podstatě jen v počítání bodových hodnot. Jde o poměrně jednoduchou a rychlou karetní hru, a i proto byla a je poměrně oblíbená.', 8),
+(3, 'Beer Pong', 'Test','Beer pong je hra pro čtyři hráče, která je spojená s pitím piva. Úkolem hráčů je hodit pingpongový míček do soupeřových kelímků s pivem. Trefený kelímek musí soupeř vypít.', 30);

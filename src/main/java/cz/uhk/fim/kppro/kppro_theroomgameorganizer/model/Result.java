@@ -14,7 +14,7 @@ public class Result {
 
     @NotNull
     @ManyToOne
-    private User user;
+    private User player;
 
     @NotNull
     @ManyToOne
@@ -40,12 +40,12 @@ public class Result {
         this.tournament = tournament;
     }
 
-    public User getUser() {
-        return user;
+    public User getPlayer() {
+        return player;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPlayer(User player) {
+        this.player = player;
     }
 
     public int getPosition() {
