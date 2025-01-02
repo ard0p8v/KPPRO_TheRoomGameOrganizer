@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+</head>
+<body>
+<section class="hero is-dark is-fullheight">
+    <div class="hero-head">
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="#">
+                        <img src="/images/logo.png" alt="theRoom-logo" style="max-height: 8rem;">
+                    </a>
+                    <span class="navbar-burger" data-target="navbarMenu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                </div>
+                <div id="navbarMenu" class="navbar-menu">
+                    <div class="navbar-end">
+                        <a class="navbar-item is-active" href="#">Home</a>
+                        <a class="navbar-item" href="#">About</a>
+                        <a class="navbar-item" href="#">Services</a>
+                        <a class="navbar-item" href="#">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="hero-body">
+        <div class="container">
+            <div th:if="${isSuccessDelete}" class="notification is-success">
+                Turnaj byl úspěšně smazán!
+            </div>
+
+            <div class="columns is-vcentered">
+                <div class="column is-half">
+                    <!-- Centered image -->
+                    <div class="image-container">
+                        <img src="/images/poker.png" alt="Product Image" id="productImage">
+                    </div>
+                </div>
+                <div class="column is-half">
+                    <div class="pb-4 same-width-button">
+                        <button class="button is-primary pb-3" th:onclick="|editTournament('${tournament.id}')|">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M5 19h1.425L16.2 9.225L14.775 7.8L5 17.575zm-2 2v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM19 6.4L17.6 5zm-3.525 2.125l-.7-.725L16.2 9.225z"/></svg>
+                            &nbsp;Upravit turnaj
+                        </button>
+
+                        <button class="button is-primary pb-3" th:onclick="|deleteTournament('${tournament.id}')|">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 9v10H8V9zm-1.5-6h-5l-1 1H5v2h14V4h-3.5zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2z"/></svg>
+                            &nbsp;Smazat turnaj
+                        </button>
+                    </div>
+                    <h1 class="title" th:text="${tournament.title}">Product Name</h1>
+                    <h2 class="subtitle" th:text="${tournament.date}">Category</h2>
+
+                    <div class="attributes">
+                        <div class="attribute">
+                            <span class="attribute-name">Název hry:</span>
+                            <span class="attribute-value" th:text="${tournament.game.name}"></span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-name">Typ turnaje:</span>
+                            <span class="attribute-value" th:text="${tournament.type}"></span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-name">Místo konání turnaje:</span>
+                            <span class="attribute-value" th:text="${tournament.location}"></span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-name">Aktuální stav turnaje:</span>
+                            <span class="attribute-value" th:text="${tournament.status}"></span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-name">Maximální počet hráčů:</span>
+                            <span class="attribute-value" th:text="${tournament.game.maxPlayers}"></span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-name">Popis hry:</span>
+                            <span class="attribute-value" th:text="${tournament.game.description}"></span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-name">Pravidla hry:</span>
+                            <span class="attribute-value" th:text="${tournament.game.rules}"></span>
+                        </div>
+                    </div>
+
+                    <button class="button is-primary" onclick=window.location.href="/tournaments/"><i class="bi bi-chevron-double-left"></i>&nbsp;Zpět</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+        if ($navbarBurgers.length > 0) {
+            $navbarBurgers.forEach(el => {
+                el.addEventListener('click', () => {
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+
+                    el.classList.toggle('is-active');
+                    $target.classList.toggle('is-active');
+                });
+            });
+        }
+    });
+
+    function editTournament(tournamentId) {
+        const baseUrl = '/tournaments/edit/';
+        window.location.href = baseUrl + tournamentId;
+    }
+
+    function deleteTournament(tournamentId) {
+        const baseUrl = '/tournaments/delete/';
+        window.location.href = baseUrl + tournamentId;
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

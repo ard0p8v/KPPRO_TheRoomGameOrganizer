@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+</head>
+<body>
+<section class="hero is-dark is-fullheight">
+    <div class="hero-head">
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="#">
+                        <img src="/images/logo.png" alt="theRoom-logo" style="max-height: 8rem;">
+                    </a>
+                    <span class="navbar-burger" data-target="navbarMenu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                </div>
+                <div id="navbarMenu" class="navbar-menu">
+                    <div class="navbar-end">
+                        <a class="navbar-item is-active" href="#">Home</a>
+                        <a class="navbar-item" href="#">About</a>
+                        <a class="navbar-item" href="#">Services</a>
+                        <a class="navbar-item" href="#">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns is-vcentered">
+                <div class="column is-half">
+                    <!-- Image left -->
+                    <div class="image-container">
+                        <img src="/images/poker.png" alt="Product Image" id="productImage">
+                    </div>
+                </div>
+                <div class="column is-half">
+                    <h1 class="title" th:text="${edit ? 'Upravení turnaje' : 'Vytvoření nového turnaje'}"></h1>
+
+                    <!-- Form area -->
+                    <form method="post" th:action="@{'/tournaments/save'}" th:object="${tournament}">
+
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="field">
+                            <label class="label">Název turnaje:</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Vyplňte název turnaje" th:field="*{title}" required>
+                                <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Datum konání turnaje:</label>
+                            <div class="control">
+                                <input class="input" type="datetime" th:field="*{date}" required>
+                                <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Název hry:</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select th:field="*{game}" required>
+                                        <option value="">Vyber jednu z možností</option>
+                                        <option th:each="g: ${games}" th:text="${g.name}" th:value="${g.id}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Místo konání turnaje:</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Vyplňte místo konání turnaje" th:field="*{location}"required>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Typ turnaje:</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select th:field="*{type}" required>
+                                        <option value="">Vyber jednu z možností</option>
+                                        <option th:each="type: ${types}" th:value="${type}" th:text="${type}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Stav turnaje:</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select th:field="*{status}" required>
+                                        <option value="">Vyber jednu z možností</option>
+                                        <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field is-grouped is-grouped-justified pt-3">
+                            <div class="control">
+                                <button class="button is-primary" type="button" onclick="goBack()"><i class="bi bi-chevron-double-left"></i>&nbsp;Zpět</button>
+                            </div>
+                            <div class="control">
+                                <button class="button is-primary" type="submit">Uložit turnaj</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+        if ($navbarBurgers.length > 0) {
+            $navbarBurgers.forEach(el => {
+                el.addEventListener('click', () => {
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+
+                    el.classList.toggle('is-active');
+                    $target.classList.toggle('is-active');
+                });
+            });
+        }
+    });
+
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

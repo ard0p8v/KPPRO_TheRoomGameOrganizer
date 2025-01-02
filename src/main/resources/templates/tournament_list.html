@@ -3,26 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Mode Layout</title>
+    <title>THE ROOM tournaments</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
 </head>
 <body>
-
-<h1>List of all Cars:</h1>
-
-<a th:href="@{'/game/create'}">CREATE NEW GAME</a>
-<br>
-
-<ul>
-
-    <li th:each="game: ${games}">
-        <a th:text="${game.title}" th:href="@{'/game/detail/' + ${game.id}}">
-
-        </a>
-    </li>
-
-</ul>
 
 <section class="hero is-dark is-fullheight">
     <div class="hero-head">
@@ -30,8 +15,7 @@
             <div class="container">
                 <div class="navbar-brand">
                     <a class="navbar-item" href="#">
-                        <!-- Zvětšené logo -->
-                        <img src="/images/logo.png" alt="Logo" style="max-height: 10rem;">
+                        <img src="/images/logo.png" alt="theRoom-logo" style="max-height: 8rem;">
                     </a>
                     <span class="navbar-burger" data-target="navbarMenu">
                             <span></span>
@@ -53,73 +37,49 @@
 
     <div class="hero-body">
         <div class="container has-text-centered">
+            <div th:if="${isSuccessDelete}" class="notification is-success">
+                Turnaj byl úspěšně smazán!
+            </div>
+
             <h1 class="title">
                 Aktuální nabídka turnajů
             </h1>
             <h2 class="subtitle">
-                Pokud se chcete na některý z turnajů přihlášit, je nutné se do aplikace přihlásit!
+                Pokud se chcete některého z turnajů zúčastnit, je nutné se do aplikace přihlásit!
             </h2>
 
-            <button class="button is-primary is-large" id="loginButton">Přihlášení</button>
-
-            <!-- Modální okno -->
-            <div class="modal" id="loginModal">
-                <div class="modal-background"></div>
-                <div class="modal-card">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title">Přihlášení</p>
-                        <button class="delete" aria-label="close" id="closeModal"></button>
-                    </header>
-                    <section class="modal-card-body">
-                        <div class="field">
-                            <label class="label">E-mail</label>
-                            <div class="control">
-                                <input class="input" type="email" placeholder="Vložte e-mail">
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">Heslo</label>
-                            <div class="control">
-                                <input class="input" type="password" placeholder="Vložte heslo">
-                            </div>
-                        </div>
-                    </section>
-                    <footer class="modal-card-foot">
-                        <button class="button is-success">Přihlásit se</button>
-                        <button class="button" id="cancelModal">Zrušit</button>
-                    </footer>
-                </div>
-            </div>
+            <button class="button is-primary is-medium" id="loginButton" onclick=window.location.href="/login">
+                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor"
+                     class="mb-1 bi bi-person-check-fill" viewBox="0 0 14 14">
+                    <path fill-rule="evenodd"
+                          d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                </svg>&nbsp;&nbsp;Přihlášení
+            </button>
 
             <!-- Stylovaná tabulka -->
             <div class="table-container">
-                <table class="table is-fullwidth is-hoverable is-dark">
+                <table class="table is-fullwidth is-dark">
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Jméno</th>
-                        <th>Příjmení</th>
-                        <th>Email</th>
+                        <th>Název</th>
+                        <th>Datum konání</th>
+                        <th>Hra</th>
+                        <th>Místo uskutečnění turnaje</th>
+                        <th>Typ</th>
+                        <th>Stav</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th>1</th>
-                        <td>Jan</td>
-                        <td>Novák</td>
-                        <td>jan.novak@example.com</td>
-                    </tr>
-                    <tr>
-                        <th>2</th>
-                        <td>Anna</td>
-                        <td>Svobodová</td>
-                        <td>anna.svobodova@example.com</td>
-                    </tr>
-                    <tr>
-                        <th>3</th>
-                        <td>Petr</td>
-                        <td>Veselý</td>
-                        <td>petr.vesely@example.com</td>
+                    <tr th:each="tournament : ${tournaments}" th:onclick="|navigateToTournamentDetail('${tournament.id}')|">
+                        <th th:text="${tournament.id}"></th>
+                        <td style="font-weight: 600" th:text="${tournament.title}"></td>
+                        <td style="color: #cccccc"th:text="${tournament.date}"></td>
+                        <td th:text="${tournament.game.name}"></td>
+                        <td th:text="${tournament.location}"></td>
+                        <td th:text="${tournament.type}"></td>
+                        <td th:text="${tournament.status}"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -163,6 +123,11 @@
             loginModal.classList.remove('is-active');
         });
     });
+
+    function navigateToTournamentDetail(tournamentId) {
+        const baseUrl = '/tournaments/detail/';
+        window.location.href = baseUrl + tournamentId;
+    }
 </script>
 
 </body>

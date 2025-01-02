@@ -12,7 +12,7 @@ CREATE TABLE users (
 create table games
 (
     id          INTEGER auto_increment,
-    title       varchar(255) not null
+    name       varchar(255) not null
         constraint games_pk_2
             unique,
     description varchar(200000),
@@ -25,46 +25,46 @@ create table games
 create table tournaments
 (
     id       INTEGER auto_increment,
-    name     varchar(255) not null,
-    date     date    not null,
+    title     varchar(255) not null,
+    date     datetime    not null,
     location varchar(100) not null,
     type     varchar(50) not null,
     status   varchar(50) not null,
-    game     INTEGER not null,
+    game_id     INTEGER not null,
     constraint tournaments_pk
         primary key (id),
     constraint tournaments_GAMES_ID_fk
-        foreign key (game) references GAMES
+        foreign key (game_id) references GAMES
 );
 
 create table results
 (
     id         INTEGER auto_increment,
-    player       INTEGER not null,
-    tournament INTEGER not null,
+    player_id  INTEGER not null,
+    tournament_id INTEGER not null,
     position   INTEGER not null,
     score      INTEGER,
     constraint results_pk
         primary key (id),
     constraint results_TOURNAMENTS_ID_fk
-        foreign key (tournament) references TOURNAMENTS (ID),
+        foreign key (tournament_id) references TOURNAMENTS (ID) ON DELETE CASCADE,
     constraint results_USERS_ID_fk
-        foreign key (player) references USERS (ID)
+        foreign key (player_id) references USERS (ID) ON DELETE CASCADE
 );
 
 create table registrations
 (
     id         INTEGER auto_increment,
-    date       date    not null,
-    status     varchar not null,
-    player     INTEGER not null,
-    tournament INTEGER not null,
+    date       datetime    not null,
+    status     ENUM('ČEKAJÍCÍ', 'POTVRZENO', 'ZRUŠENO') NOT NULL,
+    player_id     INTEGER not null,
+    tournament_id INTEGER not null,
     constraint registrations_pk
         primary key (id),
     constraint registrations_TOURNAMENTS_ID_fk
-        foreign key (tournament) references TOURNAMENTS,
+        foreign key (tournament_id) references TOURNAMENTS (ID) ON DELETE CASCADE,
     constraint registrations_USERS_ID_fk
-        foreign key (player) references USERS
+        foreign key (player_id) references USERS (ID) ON DELETE CASCADE
 );
 
 

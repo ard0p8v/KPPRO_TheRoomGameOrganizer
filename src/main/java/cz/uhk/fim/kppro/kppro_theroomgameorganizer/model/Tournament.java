@@ -4,6 +4,8 @@ import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentStatus;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -15,9 +17,10 @@ public class Tournament {
     private long id;
 
     @NotBlank(message = "Název turnaje musí být vyplněn!")
-    private String name;
+    private String title;
 
-    @NotBlank(message = "Datum konání turnaje musí být vyplněn!")
+    @NotNull
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private Date date;
 
     @NotBlank(message = "Místo konání turnaje musí být vyplněno!")
@@ -40,12 +43,12 @@ public class Tournament {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Date getDate() {

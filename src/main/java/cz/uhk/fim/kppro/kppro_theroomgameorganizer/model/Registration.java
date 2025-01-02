@@ -3,6 +3,8 @@ package cz.uhk.fim.kppro.kppro_theroomgameorganizer.model;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.RegistrationStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 
@@ -15,18 +17,20 @@ public class Registration {
     private long id;
 
     @NotNull
-    private Date registrationDate;
+    private Date date;
 
     @NotNull
-    private RegistrationStatus registrationStatus;
+    private RegistrationStatus status;
     private String note;
 
     @NotNull
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User player;
 
     @NotNull
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Tournament tournament;
 
     public long getId() {
@@ -37,20 +41,20 @@ public class Registration {
         this.id = id;
     }
 
-    public RegistrationStatus getRegistrationStatus() {
-        return registrationStatus;
+    public Date getDate() {
+        return date;
     }
 
-    public void setRegistrationStatus(RegistrationStatus registrationStatus) {
-        this.registrationStatus = registrationStatus;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public Date getRegistrationDate() {
-        return registrationDate;
+    public RegistrationStatus getStatus() {
+        return status;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
-        this.registrationDate = registrationDate;
+    public void setStatus(RegistrationStatus status) {
+        this.status = status;
     }
 
     public String getNote() {
