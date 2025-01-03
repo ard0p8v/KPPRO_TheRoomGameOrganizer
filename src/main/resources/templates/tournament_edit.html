@@ -26,10 +26,14 @@
                 </div>
                 <div id="navbarMenu" class="navbar-menu">
                     <div class="navbar-end">
-                        <a class="navbar-item is-active" href="#">Home</a>
-                        <a class="navbar-item" href="#">About</a>
-                        <a class="navbar-item" href="#">Services</a>
-                        <a class="navbar-item" href="#">Contact</a>
+                        <a class="navbar-item is-large is-active" th:if="${#authorization.expression('!isAuthenticated()')}" th:href="@{/tournaments/}">Turnaje</a>
+                        <a class="navbar-item is-large is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/tournaments/}">Turnaje</a>
+                        <a class="navbar-item is-large is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/tournaments/}">Správa turnajů</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/registrations/}">Moje rezervace</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/admin}">Správa rezervací</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/users/}">Správa uživatelů</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/logout}">Odhlásit se</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/login}">Přihlásit se</a>
                     </div>
                 </div>
             </div>
@@ -109,6 +113,13 @@
                                         <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Počet míst k přihlášení:</label>
+                            <div class="control">
+                                <input class="input" type="number" placeholder="" th:field="*{freePlaces}"required>
                             </div>
                         </div>
 

@@ -30,9 +30,9 @@
             <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" th:href="@{/tournaments/}">Turnaje</a>
             <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/tournaments/}">Turnaje</a>
             <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/tournaments/}">Správa turnajů</a>
-            <a class="navbar-item is-large is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/registrations/}">Moje rezervace</a>
-            <a class="navbar-item is-large is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/admin}">Správa rezervací</a>
-            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/users/}">Správa uživatelů</a>
+            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/registrations/}">Moje rezervace</a>
+            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/admin}">Správa rezervací</a>
+            <a class="navbar-item is-large is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/users/}">Správa uživatelů</a>
             <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/logout}">Odhlásit se</a>
             <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/login}">Přihlásit se</a>
           </div>
@@ -57,37 +57,17 @@
         <h2 class="subtitle">Seznam svých registrací můžete vidět v sekci Moje registrace.</span></h2>
       </div>
 
-      <div th:if="${isFailRegistration}" class="notification is-danger">
-        <h2 class="subtitle">Na danou událost už máte vytvořenou nezrušenou registraci!</h2>
+      <div th:if="${isSuccessDeleteUser}" class="notification is-success">
+        Uživatel byl úspěšně smazán!
       </div>
 
-      <div th:if="${isFailRegistrationEnded}" class="notification is-danger">
-        <h2 class="subtitle">Není možné se přihlásit na UKONČENÝ turnaj!</h2>
+      <div th:if="${isFailDeleteUser}" class="notification is-danger">
+        Není možné smazat administrátora systému nebo právě přihlášeného uživatele.
       </div>
-
-      <div th:if="${isFailRegistrationZero}" class="notification is-danger">
-        <h2 class="subtitle">Není možné se přihlásit na turnaj. Kapacita turnaje je plná!</h2>
-      </div>
-
-      <div th:if="${isSuccessDelete}" class="notification is-success">
-        <h2 class="subtitle">Turnaj byl úspěšně smazán!</h2>
-      </div>
-
-      <h1 class="title" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}">
-        Seznam mých registrací na turnaje
-      </h1>
 
       <h1 class="title" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
-        Seznam všech vytvořených rezervací na všechny dostupné turnaje
+        Seznam uživatelů v systému <span style="color: #00d1b2">THE ROOM GAMES ORGANIZER</span>
       </h1>
-
-      <h2 class="subtitle" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}">
-        Každou rezervaci je možné zrušit odkazem v pravém sloupci tabulky.
-      </h2>
-
-      <h2 class="subtitle" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
-        Každou rezervaci je možné zrušit nebo naopak potvrdit pomocí odkazů v pravém sloupci tabulky.
-      </h2>
 
       <!-- Stylovaná tabulka -->
       <div class="table-container">
@@ -95,27 +75,25 @@
           <thead>
           <tr>
             <th>#</th>
-            <th>Jméno a příjmení</th>
-            <th>Datum vytvoření registrace</th>
-            <th>Turnaj</th>
-            <th>Datum konání turnaje</th>
-            <th>Poznámka k registraci</th>
-            <th>Stav registrace</th>
+            <th>Jméno</th>
+            <th>Příjmení</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role v systému</th>
             <th></th>
             <th th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}"></th>
           </tr>
           </thead>
           <tbody>
-          <tr th:each="registration : ${registrations}">
-            <th th:text="${registration.id}"></th>
-            <td><a style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/users/detail/' + ${registration.user.id}}"><span style="font-weight: 400;" th:text="${registration.user.name + ' ' + registration.user.surname}"></span></a></td>
-            <td style="color: #cccccc" th:text="${registration.date}"></td>
-            <td><a style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/tournaments/detail/' + ${registration.tournament.id}}"><span style="font-weight: 600" th:text="${registration.tournament.title}"></span></a></td>
-            <td th:text="${registration.tournament.date}"></td>
-            <td th:text="${registration.note}"></td>
-            <td th:text="${registration.status}"></td>
-            <td th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}"><a style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/registrations/confirm/' + ${registration.id}}">Potvrdit</a></td>
-            <td><a style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/registrations/cancel/' + ${registration.id}}">Zrušit</a></td>
+          <tr th:each="user : ${users}" th:onclick="|navigateToUserDetail('${user.id}')|">
+            <th th:text="${user.id}"></th>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.surname}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.role}"></td>
+            <td></td>
+            <td><a style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/users/delete/' + ${user.id}}">Smazat</a></td>
           </tr>
           </tbody>
         </table>
@@ -160,9 +138,9 @@
     });
   });
 
-  function navigateToTournamentDetail(tournamentId) {
-    const baseUrl = '/tournaments/detail/';
-    window.location.href = baseUrl + tournamentId;
+  function navigateToUserDetail(userId) {
+    const baseUrl = '/users/detail/';
+    window.location.href = baseUrl + userId;
   }
 </script>
 

@@ -6,7 +6,7 @@ CREATE TABLE users (
     email VARCHAR(255),
     password VARCHAR(255) NOT NULL,
     role VARCHAR(50) NOT NULL,
-    CONSTRAINT user_pk PRIMARY KEY (id),
+    PRIMARY KEY (id),
     CONSTRAINT user_email_unique UNIQUE (email)
 );
 
@@ -43,12 +43,9 @@ create table results
     tournament_id INTEGER not null,
     position   INTEGER not null,
     score      INTEGER,
-    constraint results_pk
-        primary key (id),
-    constraint results_TOURNAMENTS_ID_fk
-        foreign key (tournament_id) references TOURNAMENTS (ID) ON DELETE CASCADE,
-    constraint results_USERS_ID_fk
-        foreign key (user_id) references USERS (ID) ON DELETE CASCADE
+    primary key (id),
+    foreign key (tournament_id) references TOURNAMENTS (ID) ON DELETE CASCADE,
+    foreign key (user_id) references USERS (ID) ON DELETE CASCADE
 );
 
 create table registrations
@@ -60,10 +57,8 @@ create table registrations
     user_id     INTEGER not null,
     tournament_id INTEGER not null,
     PRIMARY KEY (id),
-    constraint registrations_TOURNAMENTS_ID_fk
-        foreign key (tournament_id) references TOURNAMENTS (ID) ON DELETE CASCADE,
-    constraint registrations_USERS_ID_fk
-        foreign key (user_id) references USERS (ID) ON DELETE CASCADE
+    foreign key (tournament_id) references TOURNAMENTS (ID) ON DELETE CASCADE,
+    foreign key (user_id) references USERS (ID) ON DELETE CASCADE
 );
 
 

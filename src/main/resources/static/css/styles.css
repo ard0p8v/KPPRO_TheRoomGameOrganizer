@@ -14,7 +14,7 @@ body {
 
 /* Moderní stylování odkazů v navbaru */
 .navbar-item {
-    font-size: 0.8rem; /* Zmenšená velikost textu */
+    font-size: 1.1rem; /* Zmenšená velikost textu */
     padding: 0.5rem 1rem; /* Zmenšené paddingy */
     border-radius: 4px;
     transition: background-color 0.3s ease, color 0.3s ease; /* Přechodový efekt */
@@ -116,7 +116,7 @@ a:hover {
 }
 
 .table.is-dark tbody tr:hover {
-    background-color: #00d1b2;
+    background-color: #d1fff8;
     color: #333333;
     cursor: pointer;
 }

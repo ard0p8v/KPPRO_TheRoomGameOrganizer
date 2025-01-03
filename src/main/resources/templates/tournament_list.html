@@ -28,12 +28,14 @@
 
                 <div id="navbarMenu" class="navbar-menu">
                     <div class="navbar-end">
-                        <a class="navbar-item is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/tournaments/}">Turnaje</a>
-                        <a class="navbar-item is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/}">Správa turnajů</a>
-                        <a th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" class="navbar-item" th:href="@{/registrations/}">Moje rezervace</a>
-                        <a th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" class="navbar-item" th:href="@{/registrations/}">Správa rezervací</a>
-                        <a th:if="${#authorization.expression('isAuthenticated()')}" style="color: #00d1b2;" class="navbar-item" th:href="@{/logout}">Odhlásit se</a>
-                        <a th:if="${#authorization.expression('!isAuthenticated()')}" style="color: #00d1b2;" class="navbar-item" th:href="@{/login}">Přihlásit se</a>
+                        <a class="navbar-item is-large is-active" th:if="${#authorization.expression('!isAuthenticated()')}" th:href="@{/tournaments/}">Turnaje</a>
+                        <a class="navbar-item is-large is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/tournaments/}">Turnaje</a>
+                        <a class="navbar-item is-large is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/tournaments/}">Správa turnajů</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/registrations/}">Moje rezervace</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/admin}">Správa rezervací</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/users/}">Správa uživatelů</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/logout}">Odhlásit se</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/login}">Přihlásit se</a>
                     </div>
                 </div>
             </div>
@@ -52,7 +54,11 @@
             </div>
 
             <div th:if="${isSuccessDelete}" class="notification is-success">
-                Turnaj byl úspěšně smazán!
+                <h2 class="subtitle">Turnaj byl úspěšně smazán!</h2>
+            </div>
+
+            <div th:if="${param.ended}" class="notification is-success">
+                <h2 class="subtitle">Turnaj byl nastaven na ukončený!</h2>
             </div>
 
             <h1 class="title">
@@ -93,6 +99,7 @@
                         <th>Místo uskutečnění turnaje</th>
                         <th>Typ</th>
                         <th>Stav</th>
+                        <th th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -105,6 +112,7 @@
                         <td th:text="${tournament.location}"></td>
                         <td th:text="${tournament.type}"></td>
                         <td th:text="${tournament.status}"></td>
+                        <td th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}"><a style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/tournaments/end/' + ${tournament.id}}">Ukončit</a></td>
                     </tr>
                     </tbody>
                 </table>

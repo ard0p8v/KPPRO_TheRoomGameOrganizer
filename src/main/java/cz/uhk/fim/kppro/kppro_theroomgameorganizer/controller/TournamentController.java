@@ -3,7 +3,6 @@ package cz.uhk.fim.kppro.kppro_theroomgameorganizer.controller;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.RegistrationStatus;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentStatus;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentType;
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Game;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Registration;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Tournament;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.User;
@@ -40,8 +39,6 @@ public class TournamentController {
 
     @GetMapping({"/", "/login", "/logout"})
     public String getListTournament(Model model) {
-        List<Tournament> tourmanents = tournamentService.getAllTournaments();
-
         model.addAttribute("tournaments", tournamentService.getAllTournaments());
         return "tournament_list";
     }
@@ -116,9 +113,37 @@ public class TournamentController {
     }
 
     @PostMapping("/{id}/register")
-    public String registerForTournament(@PathVariable Long id, @RequestParam("userId") Long userId, @RequestParam("note") String note) {
+    public String registerForTournament(@PathVariable Long id, @RequestParam("userId") Long userId, @RequestParam("note") String note, RedirectAttributes redirectAttributes) {
         Tournament tournament = tournamentService.getTournamentById(id);
         User user = userService.getUserById(userId);
+
+        if (tournament.getStatus().equals(TournamentStatus.ukončený)) {
+            redirectAttributes.addFlashAttribute("isFailRegistrationEnded", true);
+            return "redirect:/registrations/";
+        }
+
+        if (tournament.getFreePlaces() == 0) {
+            redirectAttributes.addFlashAttribute("isFailRegistrationZero", true);
+            return "redirect:/registrations/";
+        }
+
+        List<Registration> userReservations = registrationService.getRegistrationsByUser(user);
+        boolean alreadyRegistered = false;
+        if (!userReservations.isEmpty()) {
+            for (Registration registration : userReservations) {
+                if (registration.getTournament().getId() == tournament.getId()) {
+                    if (!registration.getStatus().equals(RegistrationStatus.ZRUŠENO)) {
+                        alreadyRegistered = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (alreadyRegistered) {
+            redirectAttributes.addFlashAttribute("isFailRegistration", true);
+            return "redirect:/registrations/";
+        }
 
         if (tournament.getFreePlaces() > 0) {
             Registration registration = new Registration();
@@ -135,5 +160,17 @@ public class TournamentController {
         }
 
         return "redirect:/tournaments/?registration=true";
+    }
+
+    @GetMapping("/end/{id}")
+    public String end(Model model, @PathVariable long id) {
+        Tournament tournament = tournamentService.getTournamentById(id);
+        if(tournament != null) {
+            tournament.setStatus(TournamentStatus.ukončený);
+
+            tournamentService.saveTournament(tournament);
+            return "redirect:/tournaments/?ended=true";
+        }
+        return "redirect:/tournaments/";
     }
 }

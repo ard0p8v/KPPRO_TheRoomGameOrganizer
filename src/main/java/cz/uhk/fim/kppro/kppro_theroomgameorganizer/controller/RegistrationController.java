@@ -12,6 +12,7 @@ import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,12 @@ public class RegistrationController {
         this.userService = userService;
     }
 
+    @GetMapping("/admin")
+    public String getListRegistration(Model model) {
+        model.addAttribute("registrations", registrationService.getAllRegistrations());
+        return "registration_list";
+    }
+
     @GetMapping("/")
     public String getListUserRegistrations(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,15 +52,35 @@ public class RegistrationController {
     }
 
     @GetMapping("/cancel/{id}")
-    public String edit(Model model, @PathVariable long id) {
+    public String cancel(Model model, @PathVariable long id) {
         Registration registration = registrationService.getRegistrationById(id);
         if(registration != null) {
             registration.setStatus(RegistrationStatus.ZRUŠENO);
-
             registrationService.saveRegistration(registration);
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null) {
+                UserDetails userDetails = (UserDetails) auth.getPrincipal();
+                if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                    return "redirect:/registrations/admin?canceled=true";
+                }
+            }
+
             return "redirect:/registrations/?canceled=true";
         }
         return "redirect:/registrations/";
+    }
+
+    @GetMapping("/confirm/{id}")
+    public String confirm(Model model, @PathVariable long id) {
+        Registration registration = registrationService.getRegistrationById(id);
+        if(registration != null) {
+            registration.setStatus(RegistrationStatus.POTVRZENO);
+
+            registrationService.saveRegistration(registration);
+            return "redirect:/registrations/admin?confirmed=true";
+        }
+        return "redirect:/registrations/admin";
     }
 
 }

@@ -41,10 +41,14 @@
                 </div>
                 <div id="navbarMenu" class="navbar-menu">
                     <div class="navbar-end">
-                        <a class="navbar-item is-active" href="#">Home</a>
-                        <a class="navbar-item" href="#">About</a>
-                        <a class="navbar-item" href="#">Services</a>
-                        <a class="navbar-item" href="#">Contact</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" th:href="@{/tournaments/}">Turnaje</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/tournaments/}">Turnaje</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/tournaments/}">Správa turnajů</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/registrations/}">Moje rezervace</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/admin}">Správa rezervací</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/users/}">Správa uživatelů</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/logout}">Odhlásit se</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/login}">Přihlásit se</a>
                     </div>
                 </div>
             </div>
@@ -90,80 +94,9 @@
                     </footer>
                 </div>
             </div>
-
-            <!-- Stylovaná tabulka -->
-            <div class="table-container">
-                <table class="table is-fullwidth is-hoverable is-dark">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Jméno</th>
-                        <th>Příjmení</th>
-                        <th>Email</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th>1</th>
-                        <td>Jan</td>
-                        <td>Novák</td>
-                        <td>jan.novak@example.com</td>
-                    </tr>
-                    <tr>
-                        <th>2</th>
-                        <td>Anna</td>
-                        <td>Svobodová</td>
-                        <td>anna.svobodova@example.com</td>
-                    </tr>
-                    <tr>
-                        <th>3</th>
-                        <td>Petr</td>
-                        <td>Veselý</td>
-                        <td>petr.vesely@example.com</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div>
 </section>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Handle navbar burger menu
-        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-        if ($navbarBurgers.length > 0) {
-            $navbarBurgers.forEach(el => {
-                el.addEventListener('click', () => {
-                    const target = el.dataset.target;
-                    const $target = document.getElementById(target);
-
-                    el.classList.toggle('is-active');
-                    $target.classList.toggle('is-active');
-                });
-            });
-        }
-
-        // Handle modal
-        const loginButton = document.getElementById('loginButton');
-        const loginModal = document.getElementById('loginModal');
-        const closeModal = document.getElementById('closeModal');
-        const cancelModal = document.getElementById('cancelModal');
-
-        loginButton.addEventListener('click', () => {
-            loginModal.classList.add('is-active');
-        });
-
-        closeModal.addEventListener('click', () => {
-            loginModal.classList.remove('is-active');
-        });
-
-        cancelModal.addEventListener('click', () => {
-            loginModal.classList.remove('is-active');
-        });
-    });
-</script>
 
 </body>
 </html>

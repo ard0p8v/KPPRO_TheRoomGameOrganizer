@@ -56,11 +56,11 @@ INSERT INTO games (id, name, description, rules, max_players) VALUES
 
 -- Insert data into tournaments table
 INSERT INTO tournaments (title, date, location, type, status, free_places, game_id) VALUES
-                                                                                       ('Šachový šampionát', '2025-01-10 10:00:00', 'The Room, Humpolec', 'šampionát', 'plánovaný', 2, 1),
-                                                                                       ('Pokerový turnaj', '2025-02-15 12:00:00', 'The Room, Pelhřimov', 'turnaj', 'plánovaný', 10, 2),
+                                                                                       ('Novoroční pokerový turnaj', '2025-01-10 10:00:00', 'The Room, Humpolec', 'turnaj', 'plánovaný', 2, 2),
+                                                                                       ('Únorový pokerový turnaj', '2025-02-15 12:00:00', 'The Room, Pelhřimov', 'turnaj', 'plánovaný', 10, 2),
                                                                                        ('Monopoly turnaj', '2025-03-20 14:00:00', 'The Room, Kamenice nad Lipou', 'turnaj', 'plánovaný', 6, 3),
                                                                                        ('Scrabble souboj', '2025-04-25 16:00:00', 'The Room, Pelhřimov', 'souboj', 'plánovaný', 4, 4),
-                                                                                       ('Catan střetnutí', '2025-01-01 18:00:00', 'The Room, Humpolec', 'střetnutí', 'ukončený', 4, 5),
+                                                                                       ('Šachový šampionát', '2025-01-01 18:00:00', 'The Room, Humpolec', 'šampionát', 'plánovaný', 4, 1),
                                                                                        ('Risk rumble', '2025-06-15 10:00:00', 'The Room, Kamenice nad Lipou', 'rumble', 'plánovaný', 6, 6),
                                                                                        ('Clue dobyvatel', '2025-07-20 12:00:00', 'The Room, Pelhřimov', 'dobyvatel', 'plánovaný', 6, 7),
                                                                                        ('Lodě bitva', '2025-08-25 14:00:00', 'The Room, Humpolec', 'bitva', 'plánovaný', 2, 8),
@@ -111,11 +111,6 @@ INSERT INTO results (id, user_id, tournament_id, position, score) VALUES
                                                                         (25, 25, 13, 1, 120);
 -- Insert data into registrations table
 INSERT INTO registrations (date, status, note, user_id, tournament_id) VALUES
-    ('2025-01-01', 'POTVRZENO', 'První registrace', 1, 1),
-    ('2025-01-05', 'ČEKAJÍCÍ', 'Čekám na potvrzení', 1, 2),
-    ('2025-01-10', 'ZRUŠENO', 'Nemohu se zúčastnit', 1, 3),
-    ('2025-01-15', 'POTVRZENO', 'Vše je připraveno', 1, 4),
-    ('2025-01-20', 'ČEKAJÍCÍ', 'Čeká na schválení', 1, 5),
     ('2025-01-25', 'ZRUŠENO', 'Zrušeno z důvodu', 2, 1),
     ('2025-02-01', 'POTVRZENO', 'Registrace úspěšná', 2, 2),
     ('2025-02-05', 'ČEKAJÍCÍ', 'Čekám na odpověď', 2, 3),

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+</head>
+<body>
+<section class="hero is-dark is-fullheight">
+  <div class="hero-head">
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="#">
+            <img src="/images/logo.png" alt="theRoom-logo" style="max-height: 8rem;">
+          </a>
+          <span class="navbar-burger" data-target="navbarMenu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+        </div>
+        <div id="navbarMenu" class="navbar-menu">
+          <div class="navbar-end">
+            <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" th:href="@{/tournaments/}">Turnaje</a>
+            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/tournaments/}">Turnaje</a>
+            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/tournaments/}">Správa turnajů</a>
+            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/registrations/}">Moje rezervace</a>
+            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/admin}">Správa rezervací</a>
+            <a class="navbar-item is-large is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/users/}">Správa uživatelů</a>
+            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/logout}">Odhlásit se</a>
+            <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/login}">Přihlásit se</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div class="hero-body">
+    <div class="container">
+      <div th:if="${isSuccessDelete}" class="notification is-success">
+        Turnaj byl úspěšně smazán!
+      </div>
+
+      <div class="columns is-vcentered">
+        <div class="column is-half">
+          <!-- Centered image -->
+          <div class="image-container">
+            <img src="/images/user.png" alt="User" id="productImage">
+          </div>
+        </div>
+        <div class="column is-half">
+          <div class="pb-4 same-width-button">
+            <button th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="button is-primary pb-3" th:onclick="|deleteUser('${user.id}')|">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 9v10H8V9zm-1.5-6h-5l-1 1H5v2h14V4h-3.5zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2z"/></svg>
+              &nbsp;Smazat uživatele
+            </button>
+
+          </div>
+          <h1 class="title" th:text="${user.name + ' ' + user.surname}"></h1>
+
+          <div class="attributes">
+            <div class="attribute">
+              <span class="attribute-name">Jméno:</span>
+              <span class="attribute-value" th:text="${user.name}"></span>
+            </div>
+            <div class="attribute">
+              <span class="attribute-name">Příjmení:</span>
+              <span class="attribute-value" th:text="${user.surname}"></span>
+            </div>
+            <div class="attribute">
+              <span class="attribute-name">Username:</span>
+              <span class="attribute-value" th:text="${user.username}"></span>
+            </div>
+            <div class="attribute">
+              <span class="attribute-name">Email:</span>
+              <span class="attribute-value" th:text="${user.email}"></span>
+            </div>
+            <div class="attribute">
+              <span class="attribute-name">Role v systému</span>
+              <span class="attribute-value" th:text="${user.role}"></span>
+            </div>
+          </div>
+
+          <div class="field is-grouped is-grouped-justified pt-3">
+            <div class="control">
+              <button class="button is-primary" onclick=goBack()><i class="bi bi-chevron-double-left"></i>&nbsp;Zpět</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+    if ($navbarBurgers.length > 0) {
+      $navbarBurgers.forEach(el => {
+        el.addEventListener('click', () => {
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+
+          el.classList.toggle('is-active');
+          $target.classList.toggle('is-active');
+        });
+      });
+    }
+  });
+
+  function deleteUser(userId) {
+    const baseUrl = '/users/delete/';
+    window.location.href = baseUrl + userId;
+  }
+
+  function goBack() {
+    window.history.back();
+  }
+</script>
+</body>
+</html>
