@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+</head>
+<body>
+<section class="hero is-dark is-fullheight">
+  <div class="hero-head">
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="#">
+            <img src="/images/logo.png" alt="theRoom-logo" style="max-height: 8rem;">
+          </a>
+          <span class="navbar-burger" data-target="navbarMenu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+        </div>
+        <div id="navbarMenu" class="navbar-menu">
+          <div class="navbar-end">
+            <a class="navbar-item is-active" href="#">Home</a>
+            <a class="navbar-item" href="#">About</a>
+            <a class="navbar-item" href="#">Services</a>
+            <a class="navbar-item" href="#">Contact</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-vcentered">
+        <div class="column is-half">
+          <!-- Image left -->
+          <div class="image-container">
+            <img src="/images/poker.png" alt="Product Image" id="productImage">
+          </div>
+        </div>
+        <div class="column is-half">
+          <h1 class="title" th:text="${tournament.title}"></h1>
+          <h2 class="subtitle" th:text="${tournament.date}"></h2>
+
+          <form th:action="@{/tournaments/{id}/register(id=${tournament.id})}" method="post">
+
+            <input type="hidden" name="userId" th:value="${#authentication.principal.id}">
+
+            <div class="field">
+              <label class="label">Poznámka k rezervaci či turnaji:</label>
+              <div class="control">
+                <input class="textarea is-medium" type="textarea" name="note" placeholder="...">
+              </div>
+            </div>
+
+            <div class="field is-grouped is-grouped-justified pt-3">
+              <div class="control">
+                <button class="button is-primary" type="button" onclick="goBack()"><i class="bi bi-chevron-double-left"></i>&nbsp;Zpět</button>
+              </div>
+              <div class="control">
+                <button style="font-weight: 600" class="button is-primary" type="submit">POTVRDIT REZERVACI&nbsp;
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 1200 1200"><path fill="#fff" d="m1004.237 99.152l-611.44 611.441l-198.305-198.305L0 706.779l198.305 198.306l195.762 195.763L588.56 906.355L1200 294.916z"/></svg>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+    if ($navbarBurgers.length > 0) {
+      $navbarBurgers.forEach(el => {
+        el.addEventListener('click', () => {
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+
+          el.classList.toggle('is-active');
+          $target.classList.toggle('is-active');
+        });
+      });
+    }
+  });
+
+  function goBack() {
+    window.history.back();
+  }
+</script>
+</body>
+</html>
