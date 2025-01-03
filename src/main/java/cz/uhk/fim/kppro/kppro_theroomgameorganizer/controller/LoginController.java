@@ -2,9 +2,13 @@ package cz.uhk.fim.kppro.kppro_theroomgameorganizer.controller;
 
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.User;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,23 +29,11 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/home")
-    public String home() {
-        return "home";
-    }
-
-    @Bean
-    CommandLineRunner loadData(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        return args -> {
-            if (userRepository.findByEmail("ardolf@koncepthk.cz") == null) {
-                User user = new User();
-                user.setName("Admin");
-                user.setSurname("User");
-                user.setEmail("admin@example.com");
-                user.setPassword(passwordEncoder.encode("password"));
-                user.setRole("ROLE_ADMIN");
-                userRepository.save(user);
-            }
-        };
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+        return "redirect:/tournaments/?logout=true";
     }
 }

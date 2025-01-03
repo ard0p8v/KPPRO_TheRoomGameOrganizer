@@ -22,11 +22,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<Game> getAllGames() {
-        /*Game game = new Game();
-        game.setTitle("Test Game");
-        game.setMaxPlayers(2);
-        gameRepository.save(game);*/
-
         return gameRepository.findAll();
     }
 

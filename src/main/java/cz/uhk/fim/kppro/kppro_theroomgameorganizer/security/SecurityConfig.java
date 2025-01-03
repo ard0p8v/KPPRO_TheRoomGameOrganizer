@@ -36,21 +36,21 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/tournaments/", "/css/**", "/images/**").permitAll()
+                        .requestMatchers("/admin/**", "/tournaments/edit/**").hasRole("ADMIN")
+                        .requestMatchers("/", "/tournaments/", "/css/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 //.formLogin(Customizer.withDefaults())
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/tournaments/", true)
+                        .defaultSuccessUrl("/tournaments/?login=true", true)
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/tournaments/logout?logout=true")
                         .permitAll()
                 )
                 .exceptionHandling((exceptions) -> exceptions

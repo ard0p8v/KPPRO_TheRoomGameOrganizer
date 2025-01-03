@@ -3,6 +3,7 @@ package cz.uhk.fim.kppro.kppro_theroomgameorganizer.model;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentStatus;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,7 +21,7 @@ public class Tournament {
     private String title;
 
     @NotNull
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date date;
 
     @NotBlank(message = "Místo konání turnaje musí být vyplněno!")
@@ -31,6 +32,9 @@ public class Tournament {
 
     @Enumerated(EnumType.STRING)
     private TournamentStatus status;
+
+    @NotNull
+    private int freePlaces;
 
     @ManyToOne
     private Game game;
@@ -81,6 +85,14 @@ public class Tournament {
 
     public void setStatus(TournamentStatus status) {
         this.status = status;
+    }
+
+    public int getFreePlaces() {
+        return freePlaces;
+    }
+
+    public void setFreePlaces(int freePlaces) {
+        this.freePlaces = freePlaces;
     }
 
     public Game getGame() {

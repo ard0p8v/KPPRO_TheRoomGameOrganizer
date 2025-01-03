@@ -6,5 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
-    public String theRoom() { return "index"; }
+    @GetMapping("/")
+    public String theRoom() {
+        return "redirect:/tournaments/";
+    }
+
+    @GetMapping("/403")
+    public String forbidden(){
+        return "403";
+    }
 }

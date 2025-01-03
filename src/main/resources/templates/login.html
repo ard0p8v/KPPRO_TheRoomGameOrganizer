@@ -46,7 +46,7 @@
             <div th:if="${param.error}" class="notification is-danger">
               Nesprávné přihlašovací údaje, zkuste to prosím znovu.
             </div>
-            <form method="post" action="/login">
+            <form method="post" th:action="@{/login}">
               <div class="field">
                 <label class="label">Email</label>
                 <div class="control">
@@ -59,7 +59,7 @@
                   <input class="input" type="password" id="password" name="password" placeholder="Vložte heslo" required>
                 </div>
               </div>
-              <input name="_csrf" type="hidden" value="44kYSX67O3kIGlutm5ZmdaMovmwIcXbjELhoDSKic3zmCeue1b4geEeNWR0lLGuUr7tSQsEYkw45SU7OKYFaaRLARUXXbNOs" />
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
               <div class="field">
                 <div class="control">
                   <button class="button is-primary is-fullwidth" type="submit">Login</button>

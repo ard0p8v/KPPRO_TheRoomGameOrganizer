@@ -115,9 +115,14 @@ a:hover {
     color: #ffffff;
 }
 
-/* Změna barvy řádku při najetí myší */
 .table.is-dark tbody tr:hover {
     background-color: #00d1b2;
+    color: #333333;
+    cursor: pointer;
+}
+
+.table.is-dark.is-reservation tbody tr:hover {
+    background-color: #d1fff8;
     color: #333333;
     cursor: pointer;
 }
@@ -157,7 +162,7 @@ form {
 }
 
 .button.is-primary {
-    width: 180px;
+    /*width: 200px;*/
 }
 
 .button.is-fullwidth {
@@ -168,4 +173,8 @@ form {
 .box {
     background-color: #292929; /* Slightly lighter dark color for the box */
     border: 1px solid #333333;
+}
+
+.hover-underline:hover {
+    text-decoration: underline;
 }

@@ -51,15 +51,16 @@
                 </div>
                 <div class="column is-half">
                     <div class="pb-4 same-width-button">
-                        <button class="button is-primary pb-3" th:onclick="|editTournament('${tournament.id}')|">
+                        <button th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="button is-primary pb-3" th:onclick="|editTournament('${tournament.id}')|">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M5 19h1.425L16.2 9.225L14.775 7.8L5 17.575zm-2 2v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM19 6.4L17.6 5zm-3.525 2.125l-.7-.725L16.2 9.225z"/></svg>
                             &nbsp;Upravit turnaj
                         </button>
 
-                        <button class="button is-primary pb-3" th:onclick="|deleteTournament('${tournament.id}')|">
+                        <button th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="button is-primary pb-3" th:onclick="|deleteTournament('${tournament.id}')|">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16 9v10H8V9zm-1.5-6h-5l-1 1H5v2h14V4h-3.5zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2z"/></svg>
                             &nbsp;Smazat turnaj
                         </button>
+
                     </div>
                     <h1 class="title" th:text="${tournament.title}">Product Name</h1>
                     <h2 class="subtitle" th:text="${tournament.date}">Category</h2>
@@ -93,9 +94,24 @@
                             <span class="attribute-name">Pravidla hry:</span>
                             <span class="attribute-value" th:text="${tournament.game.rules}"></span>
                         </div>
+                        <div class="attribute">
+                            <span style="color: #00d1b2" class="attribute-name">Počet volných míst:</span>
+                            <span style="color: #00d1b2; font-weight: 600" class="attribute-value" th:text="${tournament.freePlaces}"></span>
+                        </div>
                     </div>
 
-                    <button class="button is-primary" onclick=window.location.href="/tournaments/"><i class="bi bi-chevron-double-left"></i>&nbsp;Zpět</button>
+                    <div class="field is-grouped is-grouped-justified pt-3">
+                        <div class="control">
+                            <button class="button is-primary" onclick=window.location.href="/tournaments/"><i class="bi bi-chevron-double-left"></i>&nbsp;Zpět</button>
+                        </div>
+                        <div class="control">
+                            <button style="font-weight: 600" class="button is-primary" th:onclick="|registerForTournament('${tournament.id}')|">
+                                REGISTROVAT SE NA TURNAJ&nbsp;
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#fff" d="M15 4a4 4 0 0 0-4 4a4 4 0 0 0 4 4a4 4 0 0 0 4-4a4 4 0 0 0-4-4m0 1.9a2.1 2.1 0 1 1 0 4.2A2.1 2.1 0 0 1 12.9 8A2.1 2.1 0 0 1 15 5.9M4 7v3H1v2h3v3h2v-3h3v-2H6V7zm11 6c-2.67 0-8 1.33-8 4v3h16v-3c0-2.67-5.33-4-8-4m0 1.9c2.97 0 6.1 1.46 6.1 2.1v1.1H8.9V17c0-.64 3.1-2.1 6.1-2.1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -127,6 +143,11 @@
     function deleteTournament(tournamentId) {
         const baseUrl = '/tournaments/delete/';
         window.location.href = baseUrl + tournamentId;
+    }
+
+    function registerForTournament(tournamentId) {
+        const baseUrl = '/tournaments/';
+        window.location.href = baseUrl + tournamentId + "/register";
     }
 
     function goBack() {

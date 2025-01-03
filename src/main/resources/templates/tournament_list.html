@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE ROOM tournaments</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
 </head>
 <body>
@@ -23,12 +25,15 @@
                             <span></span>
                         </span>
                 </div>
+
                 <div id="navbarMenu" class="navbar-menu">
                     <div class="navbar-end">
-                        <a class="navbar-item is-active" href="#">Home</a>
-                        <a class="navbar-item" href="#">About</a>
-                        <a class="navbar-item" href="#">Services</a>
-                        <a class="navbar-item" href="#">Contact</a>
+                        <a class="navbar-item is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/tournaments/}">Turnaje</a>
+                        <a class="navbar-item is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/}">Správa turnajů</a>
+                        <a th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" class="navbar-item" th:href="@{/registrations/}">Moje rezervace</a>
+                        <a th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" class="navbar-item" th:href="@{/registrations/}">Správa rezervací</a>
+                        <a th:if="${#authorization.expression('isAuthenticated()')}" style="color: #00d1b2;" class="navbar-item" th:href="@{/logout}">Odhlásit se</a>
+                        <a th:if="${#authorization.expression('!isAuthenticated()')}" style="color: #00d1b2;" class="navbar-item" th:href="@{/login}">Přihlásit se</a>
                     </div>
                 </div>
             </div>
@@ -37,6 +42,15 @@
 
     <div class="hero-body">
         <div class="container has-text-centered">
+            <div th:if="${param.login}" class="notification is-success">
+                <h2 class="subtitle">Vítej, <span th:text="${#authentication.name}">User</span>!</h2>
+            </div>
+
+            <div th:if="${param.registration}" class="notification is-success">
+                <h1 class="title">Registrace na turnaj proběhla úspěšně!</span></h1>
+                <h2 class="subtitle">Seznam svých registrací můžete vidět v sekci Moje registrace.</span></h2>
+            </div>
+
             <div th:if="${isSuccessDelete}" class="notification is-success">
                 Turnaj byl úspěšně smazán!
             </div>
@@ -48,6 +62,7 @@
                 Pokud se chcete některého z turnajů zúčastnit, je nutné se do aplikace přihlásit!
             </h2>
 
+            <div th:if="${#authorization.expression('!isAuthenticated()')}">
             <button class="button is-primary is-medium" id="loginButton" onclick=window.location.href="/login">
                 <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor"
                      class="mb-1 bi bi-person-check-fill" viewBox="0 0 14 14">
@@ -56,6 +71,14 @@
                     <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                 </svg>&nbsp;&nbsp;Přihlášení
             </button>
+            </div>
+
+            <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                <button class="button is-primary" onclick=window.location.href="/tournaments/create">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"><path fill="#fff" d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5v2H5v14h14v-5z"/><path fill="#fff" d="M21 7h-4V3h-2v4h-4v2h4v4h2V9h4z"/></svg>
+                    &nbsp;&nbsp;Vytvořit nový turnaj
+                </button>
+            </div>
 
             <!-- Stylovaná tabulka -->
             <div class="table-container">
@@ -65,6 +88,7 @@
                         <th>#</th>
                         <th>Název</th>
                         <th>Datum konání</th>
+                        <th>Volný počet míst</th>
                         <th>Hra</th>
                         <th>Místo uskutečnění turnaje</th>
                         <th>Typ</th>
@@ -76,6 +100,7 @@
                         <th th:text="${tournament.id}"></th>
                         <td style="font-weight: 600" th:text="${tournament.title}"></td>
                         <td style="color: #cccccc"th:text="${tournament.date}"></td>
+                        <td style="font-weight: 800" th:text="${tournament.freePlaces}"></td>
                         <td th:text="${tournament.game.name}"></td>
                         <td th:text="${tournament.location}"></td>
                         <td th:text="${tournament.type}"></td>

@@ -5,7 +5,6 @@ import cz.uhk.fim.kppro.kppro_theroomgameorganizer.repository.UserRepository;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.security.MyUserDetails;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -30,18 +29,22 @@ public class UserServiceImpl implements UserService {
     }*/
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-                AuthorityUtils.createAuthorityList(user.getRole()));
+        return new MyUserDetails(user);
     }
 
     @Override
-    public User findUserByEmail(String email) {
+    public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User getUserById(long id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override

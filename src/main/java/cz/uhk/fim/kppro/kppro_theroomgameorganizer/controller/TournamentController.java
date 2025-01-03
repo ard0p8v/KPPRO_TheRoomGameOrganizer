@@ -1,11 +1,16 @@
 package cz.uhk.fim.kppro.kppro_theroomgameorganizer.controller;
 
+import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.RegistrationStatus;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentStatus;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentType;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Game;
+import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Registration;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Tournament;
+import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.User;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.GameService;
+import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.RegistrationService;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.TournamentService;
+import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,21 +19,26 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping("/tournaments")
 public class TournamentController {
+    private final UserService userService;
     private TournamentService tournamentService;
     private GameService gameService;
+    private RegistrationService registrationService;
 
     @Autowired
-    public TournamentController(TournamentService tournamentService, GameService gameService) {
+    public TournamentController(TournamentService tournamentService, GameService gameService, RegistrationService registrationService, UserService userService) {
         this.tournamentService = tournamentService;
         this.gameService = gameService;
+        this.registrationService = registrationService;
+        this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"/", "/login", "/logout"})
     public String getListTournament(Model model) {
         List<Tournament> tourmanents = tournamentService.getAllTournaments();
 
@@ -63,7 +73,9 @@ public class TournamentController {
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("tournament", new Tournament());
-        model.addAttribute("tournaments", tournamentService.getAllTournaments());
+        model.addAttribute("games", gameService.getAllGames());
+        model.addAttribute("types", TournamentType.values());
+        model.addAttribute("statuses", TournamentStatus.values());
         model.addAttribute("edit", false);
         return "tournament_edit";
     }
@@ -94,5 +106,34 @@ public class TournamentController {
             return "tournament_detail";
         }
         return "redirect:/tournaments/";
+    }
+
+    @GetMapping("/{id}/register")
+    public String showRegistrationForm(@PathVariable Long id, Model model) {
+        Tournament tournament = tournamentService.getTournamentById(id);
+        model.addAttribute("tournament", tournament);
+        return "registration_edit";
+    }
+
+    @PostMapping("/{id}/register")
+    public String registerForTournament(@PathVariable Long id, @RequestParam("userId") Long userId, @RequestParam("note") String note) {
+        Tournament tournament = tournamentService.getTournamentById(id);
+        User user = userService.getUserById(userId);
+
+        if (tournament.getFreePlaces() > 0) {
+            Registration registration = new Registration();
+            registration.setDate(new Date());
+            registration.setStatus(RegistrationStatus.ČEKAJÍCÍ);
+            registration.setNote(note);
+            registration.setUser(user);
+            registration.setTournament(tournament);
+
+            registrationService.saveRegistration(registration);
+
+            tournament.setFreePlaces(tournament.getFreePlaces() - 1);
+            tournamentService.saveTournament(tournament);
+        }
+
+        return "redirect:/tournaments/?registration=true";
     }
 }
