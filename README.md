@@ -1,5 +1,60 @@
 # KPPRO_TheRoomGameOrganizer
 
+## Popis
+TheRoomGameOrganizer je komplexní aplikace zaměřená na organizování a správu herních turnajů. Je navržena tak, aby usnadnila proces plánování, řízení a sledování turnajů pro různé hry. Aplikace umožňuje uživatelům spravovat své účty, registrovat se na turnaje, sledovat výsledky a mnoho dalšího.
+
+### Hlavní funkce:
+- **Správa turnajů**: Umožňuje vytvářet, upravovat a mazat turnaje. Uživatelé s rolí ADMIN mohou spravovat všechny aspekty turnajů, včetně nastavení pravidel, časového plánu a účastníků.
+- **Registrace na turnaje**: Uživatelé s rolí USER se mohou registrovat na dostupné turnaje a sledovat své přihlášky.
+- **Sledování výsledků**: Uživatelé mohou sledovat výsledky turnajů, na které se registrovali, a prohlížet si historické výsledky.
+- **Správa uživatelů**: Uživatelé s rolí ADMIN mohou spravovat uživatelské účty, včetně přidělování rolí a správy oprávnění.
+- **Bezpečnost a autentizace**: Aplikace využívá JWT (JSON Web Token) pro zabezpečenou autentizaci a autorizaci uživatelů.
+
+### Klíčové výhody:
+- **Uživatelská přívětivost**: Intuitivní rozhraní, které usnadňuje používání aplikace i méně zkušeným uživatelům.
+- **Flexibilita**: Možnost přizpůsobit turnaje různým hrám a pravidlům.
+- **Bezpečnost**: Použití moderních bezpečnostních standardů pro ochranu uživatelských dat.
+
+## Použíté technologie
+- **Java 21**
+- **Spring Boot framework**
+- **H2 database**
+- **JUNIT**
+- **Spring Security**
+- **Thymeleaf**
+- **HTML**
+- **CSS**
+- **JavaScript**
+
+### Role a oprávnění
+
+#### Nepřihlášený uživatel
+- Může prohlížet veřejné informace o turnajích.
+- Nemůže se registrovat na turnaje ani spravovat uživatelské účty.
+
+#### Uživatel s rolí USER
+- Může se registrovat na turnaje.
+- Může prohlížet a upravovat své osobní údaje.
+- Může sledovat výsledky turnajů, na které se registroval.
+
+#### Uživatel s rolí ADMIN
+- Může spravovat všechny uživatelské účty.
+- Může vytvářet, upravovat a mazat turnaje.
+- Může schvalovat a spravovat registrace na turnaje.
+- Má plný přístup ke všem funkcím a nastavením aplikace.
+
+## Základní model použití
+
+### Popis Use Case
+- **Prohlížení turnajů**: Nepřihlášený uživatel může prohlížet seznam veřejných turnajů a jejich detaily.
+- **Registrace na turnaj**: Uživatel s rolí USER se může registrovat na dostupné turnaje.
+- **Sledování výsledků**: Uživatel s rolí USER může prohlížet výsledky turnajů, na které se registroval.
+- **Správa uživatelů**: Uživatel s rolí ADMIN může spravovat všechny uživatelské účty.
+- **Správa turnajů**: Uživatel s rolí ADMIN může vytvářet, upravovat a mazat turnaje.
+- **Schvalování registrací**: Uživatel s rolí ADMIN může schvalovat registrace na turnaje.
+
+---
+
 ## Description
 The web application will serve as a real project for the "The Room" clubs located in three cities. Among other things, "The Room" clubs organize tournaments in board and card games.
 TheRoomGameOrganizer is a comprehensive application focused on organizing and managing gaming tournaments. It is designed to facilitate the planning, management, and tracking of tournaments for various games. The application allows users to manage their accounts, register for tournaments, track results, and much more.
