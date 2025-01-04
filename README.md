@@ -1,6 +1,7 @@
 # KPPRO_TheRoomGameOrganizer
 
 ## Description
+The web application will serve as a real project for the "The Room" clubs located in three cities. Among other things, "The Room" clubs organize tournaments in board and card games.
 TheRoomGameOrganizer is a comprehensive application focused on organizing and managing gaming tournaments. It is designed to facilitate the planning, management, and tracking of tournaments for various games. The application allows users to manage their accounts, register for tournaments, track results, and much more.
 
 ### Key Features:
