@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+<html lang="cs">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,10 +28,10 @@
           <div class="navbar-end">
             <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" th:href="@{/tournaments/}">Turnaje</a>
             <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/tournaments/}">Turnaje</a>
-            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/}">Správa turnajů</a>
-            <a class="navbar-item is-large is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/registrations/}">Moje rezervace</a>
-            <a class="navbar-item is-large is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/admin}">Správa rezervací</a>
-            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/users/}">Správa uživatelů</a>
+            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/tournaments/}">Správa turnajů</a>
+            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/registrations/}">Moje rezervace</a>
+            <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/admin}">Správa rezervací</a>
+            <a class="navbar-item is-large is-active" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/users/}">Správa uživatelů</a>
             <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/logout}">Odhlásit se</a>
             <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/login}">Přihlásit se</a>
           </div>
@@ -45,35 +45,38 @@
       <div class="columns is-vcentered">
         <div class="column is-half">
           <div class="image-container">
-            <img src="/images/poker.png" alt="Product Image" id="productImage">
+            <img src="/images/game.png" alt="Game">
           </div>
         </div>
         <div class="column is-half">
-          <h1 class="title" th:text="${tournament.title}"></h1>
-          <h2 class="subtitle" th:text="${tournament.date}"></h2>
 
-          <form th:action="@{/tournaments/{id}/register(id=${tournament.id})}" method="post">
+          <h1 class="title" th:text="${game.name}"></h1>
 
-            <input type="hidden" name="userId" th:value="${#authentication.principal.id}">
-
-            <div class="field">
-              <label class="label">Poznámka k rezervaci či turnaji:</label>
-              <div class="control">
-                <input class="textarea is-medium" type="textarea" name="note" placeholder="...">
-              </div>
+          <div class="attributes">
+            <div class="attribute">
+              <span class="attribute-name">Název hry:</span>
+              <span class="attribute-value" th:text="${game.name}"></span>
             </div>
-
-            <div class="field is-grouped is-grouped-justified pt-3">
-              <div class="control">
-                <button class="button is-primary" type="button" onclick="goBack()"><i class="bi bi-chevron-double-left"></i>&nbsp;Zpět</button>
-              </div>
-              <div class="control">
-                <button style="font-weight: 600" class="button is-primary" type="submit">POTVRDIT REZERVACI&nbsp;
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 1200 1200"><path fill="#fff" d="m1004.237 99.152l-611.44 611.441l-198.305-198.305L0 706.779l198.305 198.306l195.762 195.763L588.56 906.355L1200 294.916z"/></svg>
-                </button>
-              </div>
+            <div class="attribute">
+              <span class="attribute-name">Popis hry:</span>
+              <span class="attribute-value" th:text="${game.description}"></span>
             </div>
-          </form>
+            <div class="attribute">
+              <span class="attribute-name">Pravidla hry:</span>
+              <span class="attribute-value" th:text="${game.rules}"></span>
+            </div>
+            <div class="attribute">
+              <span class="attribute-name">Maximální počet hráčů:</span>
+              <span class="attribute-value" th:text="${game.maxPlayers}"></span>
+            </div>
+          </div>
+
+          <div class="field is-grouped is-grouped-justified pt-3">
+            <div class="control">
+              <button class="button is-primary" onclick=window.location.href="/tournaments/"><i class="bi bi-chevron-double-left"></i>&nbsp;Zpět</button>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

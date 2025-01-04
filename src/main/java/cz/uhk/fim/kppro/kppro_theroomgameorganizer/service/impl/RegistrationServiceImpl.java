@@ -1,11 +1,10 @@
 package cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.impl;
 
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Game;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Registration;
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Tournament;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.User;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.repository.RegistrationRepository;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.RegistrationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +15,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private RegistrationRepository registrationRepository;
 
+    @Autowired
     public RegistrationServiceImpl(RegistrationRepository registrationRepository) {
         this.registrationRepository = registrationRepository;
     }

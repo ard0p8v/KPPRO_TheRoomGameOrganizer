@@ -3,7 +3,6 @@ package cz.uhk.fim.kppro.kppro_theroomgameorganizer.model;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentStatus;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;

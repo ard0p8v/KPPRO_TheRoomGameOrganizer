@@ -48,7 +48,6 @@
 
       <div class="columns is-vcentered">
         <div class="column is-half">
-          <!-- Centered image -->
           <div class="image-container">
             <img src="/images/user.png" alt="User" id="productImage">
           </div>
@@ -99,22 +98,6 @@
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-    if ($navbarBurgers.length > 0) {
-      $navbarBurgers.forEach(el => {
-        el.addEventListener('click', () => {
-          const target = el.dataset.target;
-          const $target = document.getElementById(target);
-
-          el.classList.toggle('is-active');
-          $target.classList.toggle('is-active');
-        });
-      });
-    }
-  });
-
   function deleteUser(userId) {
     const baseUrl = '/users/delete/';
     window.location.href = baseUrl + userId;

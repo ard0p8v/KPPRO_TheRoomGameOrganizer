@@ -1,6 +1,5 @@
 package cz.uhk.fim.kppro.kppro_theroomgameorganizer.service;
 
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Game;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Registration;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.User;
 import org.springframework.stereotype.Service;

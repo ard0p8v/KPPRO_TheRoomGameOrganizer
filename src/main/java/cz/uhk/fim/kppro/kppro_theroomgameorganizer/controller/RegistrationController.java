@@ -1,10 +1,7 @@
 package cz.uhk.fim.kppro.kppro_theroomgameorganizer.controller;
 
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.RegistrationStatus;
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentStatus;
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentType;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Registration;
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Tournament;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.User;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.security.MyUserDetails;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.RegistrationService;

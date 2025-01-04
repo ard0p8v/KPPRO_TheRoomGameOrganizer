@@ -1,7 +1,6 @@
 package cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.impl;
 
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Tournament;
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.repository.GameRepository;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.repository.TournamentRepository;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;

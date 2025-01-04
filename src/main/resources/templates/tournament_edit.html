@@ -44,7 +44,6 @@
         <div class="container">
             <div class="columns is-vcentered">
                 <div class="column is-half">
-                    <!-- Image left -->
                     <div class="image-container">
                         <img src="/images/poker.png" alt="Product Image" id="productImage">
                     </div>
@@ -52,7 +51,6 @@
                 <div class="column is-half">
                     <h1 class="title" th:text="${edit ? 'Upravení turnaje' : 'Vytvoření nového turnaje'}"></h1>
 
-                    <!-- Form area -->
                     <form method="post" th:action="@{'/tournaments/save'}" th:object="${tournament}">
 
                         <input type="hidden" th:field="*{id}">
@@ -141,22 +139,6 @@
 </section>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-        if ($navbarBurgers.length > 0) {
-            $navbarBurgers.forEach(el => {
-                el.addEventListener('click', () => {
-                    const target = el.dataset.target;
-                    const $target = document.getElementById(target);
-
-                    el.classList.toggle('is-active');
-                    $target.classList.toggle('is-active');
-                });
-            });
-        }
-    });
-
     function goBack() {
         window.history.back();
     }

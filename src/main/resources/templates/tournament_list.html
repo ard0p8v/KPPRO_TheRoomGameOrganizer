@@ -45,7 +45,7 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <div th:if="${param.login}" class="notification is-success">
-                <h2 class="subtitle">Vítej, <span th:text="${#authentication.name}">User</span>!</h2>
+                <h2 class="subtitle">Vítej, <span th:text="${welcome}">User</span>!</h2>
             </div>
 
             <div th:if="${param.registration}" class="notification is-success">
@@ -86,7 +86,6 @@
                 </button>
             </div>
 
-            <!-- Stylovaná tabulka -->
             <div class="table-container">
                 <table class="table is-fullwidth is-dark">
                     <thead>
@@ -97,9 +96,10 @@
                         <th>Volný počet míst</th>
                         <th>Hra</th>
                         <th>Místo uskutečnění turnaje</th>
-                        <th>Typ</th>
+                        <th th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}">Typ</th>
                         <th>Stav</th>
                         <th th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}"></th>
+                        <th th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -108,11 +108,26 @@
                         <td style="font-weight: 600" th:text="${tournament.title}"></td>
                         <td style="color: #cccccc"th:text="${tournament.date}"></td>
                         <td style="font-weight: 800" th:text="${tournament.freePlaces}"></td>
-                        <td th:text="${tournament.game.name}"></td>
+                        <td><a style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/games/detail/' + ${tournament.game.id}}"><span style="font-weight: 600" th:text="${tournament.game.name}"></span></a></td>
                         <td th:text="${tournament.location}"></td>
-                        <td th:text="${tournament.type}"></td>
+                        <td th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:text="${tournament.type}"></td>
                         <td th:text="${tournament.status}"></td>
-                        <td th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}"><a style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/tournaments/end/' + ${tournament.id}}">Ukončit</a></td>
+                        <td th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
+                            <a th:if="${tournament.status == T(java.lang.Enum).valueOf(T(cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentStatus), 'PLÁNOVANÝ') || tournament.status == T(java.lang.Enum).valueOf(T(cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentStatus), 'PROBÍHÁ')}"
+                               style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/tournaments/end/' + ${tournament.id}}">
+                                Ukončit
+                            </a>
+                            <a th:if="${tournament.status == T(java.lang.Enum).valueOf(T(cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentStatus), 'UKONČENÝ')}"
+                               style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/tournaments/' + ${tournament.id} + '/results'}">
+                                Zapsat výsledky
+                            </a>
+                        </td>
+                        <td th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}">
+                            <a th:if="${tournament.status == T(java.lang.Enum).valueOf(T(cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentStatus), 'UKONČENÝ')}"
+                               style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/tournaments/' + ${tournament.id} + '/results'}">
+                                Zobrazit výsledky
+                            </a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -122,41 +137,6 @@
 </section>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Handle navbar burger menu
-        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-        if ($navbarBurgers.length > 0) {
-            $navbarBurgers.forEach(el => {
-                el.addEventListener('click', () => {
-                    const target = el.dataset.target;
-                    const $target = document.getElementById(target);
-
-                    el.classList.toggle('is-active');
-                    $target.classList.toggle('is-active');
-                });
-            });
-        }
-
-        // Handle modal
-        const loginButton = document.getElementById('loginButton');
-        const loginModal = document.getElementById('loginModal');
-        const closeModal = document.getElementById('closeModal');
-        const cancelModal = document.getElementById('cancelModal');
-
-        loginButton.addEventListener('click', () => {
-            loginModal.classList.add('is-active');
-        });
-
-        closeModal.addEventListener('click', () => {
-            loginModal.classList.remove('is-active');
-        });
-
-        cancelModal.addEventListener('click', () => {
-            loginModal.classList.remove('is-active');
-        });
-    });
-
     function navigateToTournamentDetail(tournamentId) {
         const baseUrl = '/tournaments/detail/';
         window.location.href = baseUrl + tournamentId;

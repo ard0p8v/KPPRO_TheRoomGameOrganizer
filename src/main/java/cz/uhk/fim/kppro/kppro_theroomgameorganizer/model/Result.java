@@ -1,7 +1,6 @@
 package cz.uhk.fim.kppro.kppro_theroomgameorganizer.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -24,7 +23,7 @@ public class Result {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Tournament tournament;
 
-    @NotBlank(message = "Výsledná pozice hráče v turnaji musí být zadána!")
+    @NotNull
     private int position;
     private int score;
 

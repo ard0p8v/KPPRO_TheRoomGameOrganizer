@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE ROOM tournaments</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<section class="hero is-dark is-fullheight">
+    <div class="hero-head">
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="#">
+                        <img src="/images/logo.png" alt="theRoom-logo" style="max-height: 8rem;">
+                    </a>
+                    <span class="navbar-burger" data-target="navbarMenu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                </div>
+                <div id="navbarMenu" class="navbar-menu">
+                    <div class="navbar-end">
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" th:href="@{/tournaments/}">Turnaje</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/tournaments/}">Turnaje</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/tournaments/}">Správa turnajů</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}" th:href="@{/registrations/}">Moje rezervace</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/registrations/admin}">Správa rezervací</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}" th:href="@{/users/}">Správa uživatelů</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/logout}">Odhlásit se</a>
+                        <a class="navbar-item is-large" th:if="${#authorization.expression('!isAuthenticated()')}" style="color: #00d1b2;" th:href="@{/login}">Přihlásit se</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="hero-body">
+        <div class="container has-text-centered">
+
+            <div th:if="${param.confirmed}" class="notification is-success">
+                <h2 class="subtitle">Rezervace na turnaj byla potvrzena!</h2>
+            </div>
+
+            <div th:if="${param.canceled}" class="notification is-success">
+                <h2 class="subtitle">Rezervace na turnaj byla úspěšně zrušena!</h2>
+            </div>
+
+            <div th:if="${param.registration}" class="notification is-success">
+                <h1 class="title">Registrace na turnaj proběhla úspěšně!</span></h1>
+                <h2 class="subtitle">Seznam svých registrací můžete vidět v sekci Moje registrace.</span></h2>
+            </div>
+
+            <div th:if="${isSuccessDelete}" class="notification is-success">
+                <h2 class="subtitle">Výsledek turnaje byl úspěšně smazán!</h2>
+            </div>
+
+            <div th:if="${isSuccess}" class="notification is-success">
+                <h2 class="subtitle">Výsledek turnaje byl úspěšně upraven!</h2>
+            </div>
+
+            <div th:if="${editNeeded}">
+                <div class="column small-form-container">
+                    <h1 class="title" th:text="${editNeeded ? 'Upravení výsledku turnaje' : 'Vytvoření výsledku turnaje'}"></h1>
+
+                    <form method="post" th:action="@{'/results/save'}" th:object="${editResult}">
+
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="field">
+                            <label class="label">Název turnaje:</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select th:field="*{tournament}" required>
+                                        <option th:text="${tournament.title}" th:value="${tournament.id}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Hráč:</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select th:field="*{user}" required>
+                                        <option value="">Vyber jednu z možností</option>
+                                        <option th:each="u: ${users}" th:text="${u.name + ' ' + u.surname}" th:value="${u.id}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Výsledné umístění:</label>
+                            <div class="control">
+                                <input class="input" type="number" placeholder="" th:field="*{position}"required>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Počet bodů/skóre:</label>
+                            <div class="control">
+                                <input class="input" type="number" placeholder="" th:field="*{score}"required>
+                            </div>
+                        </div>
+
+                        <div class="field is-grouped is-grouped-justified pt-3">
+                            <div class="control">
+                                <button class="button is-primary" type="button" onclick="goBack()"><i class="bi bi-chevron-double-left"></i>&nbsp;Zpět</button>
+                            </div>
+                            <div class="control">
+                                <button class="button is-primary" type="submit">Uložit turnaj&nbsp;
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" d="M21 7v12q0 .825-.587 1.413T19 21H5q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h12zm-2 .85L16.15 5H5v14h14zM12 18q1.25 0 2.125-.875T15 15t-.875-2.125T12 12t-2.125.875T9 15t.875 2.125T12 18m-6-8h9V6H6zM5 7.85V19V5z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <h1 class="title">
+                Výsledky turnaje
+            </h1>
+
+            <h2 class="subtitle">
+                <span style="color: #00d1b2" th:text="${tournament.title}"></span>
+            </h2>
+
+            <div th:if="${#lists.isEmpty(results)}" class="notification is-theroom">
+                <h2 class="subtitle">Zatím nejsou k dispozici žádné výsledky!</h2>
+            </div>
+
+            <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                <button class="button is-primary" th:onclick="|navigateToCreateResult('${tournament.id}')|">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24"><path fill="#fff" d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5v2H5v14h14v-5z"/><path fill="#fff" d="M21 7h-4V3h-2v4h-4v2h4v4h2V9h4z"/></svg>
+                    &nbsp;&nbsp;Vytvořit nový výsledek turnaje
+                </button>
+            </div>
+
+            <div class="table-container small-table-container" th:if="${!#lists.isEmpty(results)}">
+                <table class="table is-fullwidth is-dark is-reservation">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Jméno a příjmení hráče</th>
+                        <th>Výsledná pozice</th>
+                        <th>Skóre</th>
+                        <th th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}"></th>
+                        <th th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="result : ${results}">
+                        <th th:text="${result.id}"></th>
+                        <td th:text="${result.user.name + ' ' + result.user.surname}"></td>
+                        <td th:text="${result.position}"></td>
+                        <td th:text="${result.score}"></td>
+                        <td th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}"><a style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/results/' + ${tournament.id} + '/edit/' + ${result.id}}">Upravit</a></td>
+                        <td th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}"><a style="color: #00d1b2; font-weight: bolder;" class="hover-underline is-link" th:href="@{'/results/' + ${tournament.id} + '/delete/' + ${result.id}}">Smazat</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function navigateToCreateResult(tournamentId) {
+        const baseUrl = '/results/';
+        window.location.href = baseUrl + tournamentId + '/create';
+    }
+</script>
+
+</body>
+</html>

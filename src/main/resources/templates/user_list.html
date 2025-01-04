@@ -53,23 +53,22 @@
       </div>
 
       <div th:if="${param.registration}" class="notification is-success">
-        <h1 class="title">Registrace na turnaj proběhla úspěšně!</span></h1>
-        <h2 class="subtitle">Seznam svých registrací můžete vidět v sekci Moje registrace.</span></h2>
+        <h1 class="title">Registrace na turnaj proběhla úspěšně!</h1>
+        <h2 class="subtitle">Seznam svých registrací můžete vidět v sekci Moje registrace.</h2>
       </div>
 
       <div th:if="${isSuccessDeleteUser}" class="notification is-success">
-        Uživatel byl úspěšně smazán!
+        <h2 class="subtitle">Uživatel byl úspěšně smazán!</h2>
       </div>
 
       <div th:if="${isFailDeleteUser}" class="notification is-danger">
-        Není možné smazat administrátora systému nebo právě přihlášeného uživatele.
+        <h2 class="subtitle">Není možné smazat administrátora systému nebo právě přihlášeného uživatele.</h2>
       </div>
 
       <h1 class="title" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_ADMIN'')')}">
         Seznam uživatelů v systému <span style="color: #00d1b2">THE ROOM GAMES ORGANIZER</span>
       </h1>
 
-      <!-- Stylovaná tabulka -->
       <div class="table-container">
         <table class="table is-fullwidth is-dark is-reservation">
           <thead>
@@ -103,41 +102,6 @@
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Handle navbar burger menu
-    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-    if ($navbarBurgers.length > 0) {
-      $navbarBurgers.forEach(el => {
-        el.addEventListener('click', () => {
-          const target = el.dataset.target;
-          const $target = document.getElementById(target);
-
-          el.classList.toggle('is-active');
-          $target.classList.toggle('is-active');
-        });
-      });
-    }
-
-    // Handle modal
-    const loginButton = document.getElementById('loginButton');
-    const loginModal = document.getElementById('loginModal');
-    const closeModal = document.getElementById('closeModal');
-    const cancelModal = document.getElementById('cancelModal');
-
-    loginButton.addEventListener('click', () => {
-      loginModal.classList.add('is-active');
-    });
-
-    closeModal.addEventListener('click', () => {
-      loginModal.classList.remove('is-active');
-    });
-
-    cancelModal.addEventListener('click', () => {
-      loginModal.classList.remove('is-active');
-    });
-  });
-
   function navigateToUserDetail(userId) {
     const baseUrl = '/users/detail/';
     window.location.href = baseUrl + userId;

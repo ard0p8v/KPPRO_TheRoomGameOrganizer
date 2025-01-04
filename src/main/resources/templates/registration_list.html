@@ -89,7 +89,6 @@
         Každou rezervaci je možné zrušit nebo naopak potvrdit pomocí odkazů v pravém sloupci tabulky.
       </h2>
 
-      <!-- Stylovaná tabulka -->
       <div class="table-container">
         <table class="table is-fullwidth is-dark is-reservation">
           <thead>
@@ -125,41 +124,6 @@
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Handle navbar burger menu
-    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-    if ($navbarBurgers.length > 0) {
-      $navbarBurgers.forEach(el => {
-        el.addEventListener('click', () => {
-          const target = el.dataset.target;
-          const $target = document.getElementById(target);
-
-          el.classList.toggle('is-active');
-          $target.classList.toggle('is-active');
-        });
-      });
-    }
-
-    // Handle modal
-    const loginButton = document.getElementById('loginButton');
-    const loginModal = document.getElementById('loginModal');
-    const closeModal = document.getElementById('closeModal');
-    const cancelModal = document.getElementById('cancelModal');
-
-    loginButton.addEventListener('click', () => {
-      loginModal.classList.add('is-active');
-    });
-
-    closeModal.addEventListener('click', () => {
-      loginModal.classList.remove('is-active');
-    });
-
-    cancelModal.addEventListener('click', () => {
-      loginModal.classList.remove('is-active');
-    });
-  });
-
   function navigateToTournamentDetail(tournamentId) {
     const baseUrl = '/tournaments/detail/';
     window.location.href = baseUrl + tournamentId;

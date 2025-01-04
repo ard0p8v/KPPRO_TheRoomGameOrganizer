@@ -101,6 +101,16 @@ a:hover {
     margin-top: 2rem;
 }
 
+.small-table-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+}
+
+.small-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 .table.is-dark {
     background-color: #1a1a1a; /* Tmavší pozadí tabulky */
     color: #ffffff;
@@ -177,4 +187,9 @@ form {
 
 .hover-underline:hover {
     text-decoration: underline;
+}
+
+.notification.is-theroom {
+    background-color: #00d1b2;
+    color: white;
 }

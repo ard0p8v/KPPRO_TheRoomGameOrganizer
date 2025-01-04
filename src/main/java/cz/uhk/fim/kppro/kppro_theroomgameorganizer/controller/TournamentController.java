@@ -4,14 +4,16 @@ import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.RegistrationStatus;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentStatus;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.enums.TournamentType;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Registration;
+import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Result;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.Tournament;
 import cz.uhk.fim.kppro.kppro_theroomgameorganizer.model.User;
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.GameService;
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.RegistrationService;
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.TournamentService;
-import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.UserService;
+import cz.uhk.fim.kppro.kppro_theroomgameorganizer.security.MyUserDetails;
+import cz.uhk.fim.kppro.kppro_theroomgameorganizer.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,20 +27,33 @@ import java.util.List;
 @RequestMapping("/tournaments")
 public class TournamentController {
     private final UserService userService;
-    private TournamentService tournamentService;
-    private GameService gameService;
-    private RegistrationService registrationService;
+    private final TournamentService tournamentService;
+    private final GameService gameService;
+    private final RegistrationService registrationService;
+    private final ResultService resultService;
 
     @Autowired
-    public TournamentController(TournamentService tournamentService, GameService gameService, RegistrationService registrationService, UserService userService) {
+    public TournamentController(TournamentService tournamentService, GameService gameService, RegistrationService registrationService, UserService userService, ResultService resultService) {
         this.tournamentService = tournamentService;
         this.gameService = gameService;
         this.registrationService = registrationService;
         this.userService = userService;
+        this.resultService = resultService;
     }
 
     @GetMapping({"/", "/login", "/logout"})
     public String getListTournament(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
+            MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+            User user = userService.getUserById(userDetails.getId());
+
+            if (user != null) {
+                model.addAttribute("welcome", user.getName() + " " + user.getSurname());
+            }
+        }
+
         model.addAttribute("tournaments", tournamentService.getAllTournaments());
         return "tournament_list";
     }
@@ -117,7 +132,7 @@ public class TournamentController {
         Tournament tournament = tournamentService.getTournamentById(id);
         User user = userService.getUserById(userId);
 
-        if (tournament.getStatus().equals(TournamentStatus.ukončený)) {
+        if (tournament.getStatus().equals(TournamentStatus.UKONČENÝ)) {
             redirectAttributes.addFlashAttribute("isFailRegistrationEnded", true);
             return "redirect:/registrations/";
         }
@@ -162,11 +177,22 @@ public class TournamentController {
         return "redirect:/tournaments/?registration=true";
     }
 
+    @GetMapping("/{id}/results")
+    public String getListResultsForm(@PathVariable Long id, Model model) {
+        Tournament tournament = tournamentService.getTournamentById(id);
+        List<Result> results = resultService.getAllResultsByTournament(tournament);
+
+        model.addAttribute("tournament", tournament);
+        model.addAttribute("results", results);
+        return "result_edit_list";
+    }
+
     @GetMapping("/end/{id}")
     public String end(Model model, @PathVariable long id) {
         Tournament tournament = tournamentService.getTournamentById(id);
-        if(tournament != null) {
-            tournament.setStatus(TournamentStatus.ukončený);
+
+        if (tournament != null) {
+            tournament.setStatus(TournamentStatus.UKONČENÝ);
 
             tournamentService.saveTournament(tournament);
             return "redirect:/tournaments/?ended=true";
