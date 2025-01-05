@@ -15,11 +15,13 @@ public class Result {
 
     @NotNull
     @ManyToOne
+    @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @NotNull
     @ManyToOne
+    @JoinColumn(name = "tournament_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Tournament tournament;
 

@@ -1,6 +1,9 @@
 package cz.uhk.fim.kppro.kppro_theroomgameorganizer.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -11,9 +14,18 @@ public class User {
     private String name;
     private String surname;
     private String username;
+    @NotNull
     private String email;
+    @NotNull
     private String password;
+    @NotNull
     private String role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Registration> registrations;
+
+    @OneToMany(mappedBy = "user")
+    private List<Result> results;
 
     public long getId() {
         return id;
@@ -69,5 +81,21 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Registration> getRegistrations() {
+        return registrations;
+    }
+
+    public void setRegistrations(List<Registration> registrations) {
+        this.registrations = registrations;
+    }
+
+    public List<Result> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
     }
 }

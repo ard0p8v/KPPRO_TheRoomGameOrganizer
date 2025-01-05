@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tournaments")
@@ -36,7 +37,14 @@ public class Tournament {
     private int freePlaces;
 
     @ManyToOne
+    @JoinColumn(name = "game_id")
     private Game game;
+
+    @OneToMany(mappedBy = "tournament")
+    private List<Registration> registrations;
+
+    @OneToMany(mappedBy = "tournament")
+    private List<Result> results;
 
     public long getId() {
         return id;
@@ -100,5 +108,21 @@ public class Tournament {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public List<Registration> getRegistrations() {
+        return registrations;
+    }
+
+    public void setRegistrations(List<Registration> registrations) {
+        this.registrations = registrations;
+    }
+
+    public List<Result> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
     }
 }

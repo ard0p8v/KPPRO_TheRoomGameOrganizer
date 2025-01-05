@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.List;
+
 @Entity
 @Table(name = "games")
 public class Game {
@@ -20,6 +22,9 @@ public class Game {
     @Min(value = 2)
     @Max(value = 100)
     private int maxPlayers;
+
+    @OneToMany(mappedBy = "game")
+    private List<Tournament> tournaments;
 
     public Long getId() {
         return id;
@@ -59,5 +64,13 @@ public class Game {
 
     public void setMaxPlayers(int maxPlayers) {
         this.maxPlayers = maxPlayers;
+    }
+
+    public List<Tournament> getTournaments() {
+        return tournaments;
+    }
+
+    public void setTournaments(List<Tournament> tournaments) {
+        this.tournaments = tournaments;
     }
 }
