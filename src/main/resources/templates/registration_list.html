@@ -40,11 +40,11 @@
     <div class="container has-text-centered">
 
       <div th:if="${param.confirmed}" class="notification is-success">
-        <h2 class="subtitle">Rezervace na turnaj byla potvrzena!</h2>
+        <h2 class="subtitle">Registrace na turnaj byla potvrzena!</h2>
       </div>
 
       <div th:if="${param.canceled}" class="notification is-success">
-        <h2 class="subtitle">Rezervace na turnaj byla úspěšně zrušena!</h2>
+        <h2 class="subtitle">Registrace na turnaj byla úspěšně zrušena!</h2>
       </div>
 
       <div th:if="${param.registration}" class="notification is-success">
@@ -62,10 +62,6 @@
 
       <div th:if="${isFailRegistrationZero}" class="notification is-danger">
         <h2 class="subtitle">Není možné se přihlásit na turnaj. Kapacita turnaje je plná!</h2>
-      </div>
-
-      <div th:if="${isSuccessDelete}" class="notification is-success">
-        <h2 class="subtitle">Turnaj byl úspěšně smazán!</h2>
       </div>
 
       <h1 class="title" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ROLE_USER'')')}">

@@ -84,4 +84,16 @@ public class Game {
     public void setTournaments(List<Tournament> tournaments) {
         this.tournaments = tournaments;
     }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", rules='" + rules + '\'' +
+                ", maxPlayers=" + maxPlayers +
+                ", tournaments=" + tournaments +
+                '}';
+    }
 }

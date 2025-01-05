@@ -94,4 +94,16 @@ public class Registration {
     public void setTournament(Tournament tournament) {
         this.tournament = tournament;
     }
+
+    @Override
+    public String toString() {
+        return "Registration{" +
+                "id=" + id +
+                ", date=" + date +
+                ", status=" + status +
+                ", note='" + note + '\'' +
+                ", user=" + user +
+                ", tournament=" + tournament +
+                '}';
+    }
 }

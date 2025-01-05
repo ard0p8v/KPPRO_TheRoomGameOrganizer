@@ -78,4 +78,15 @@ public class Result {
     public void setScore(int score) {
         this.score = score;
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "id=" + id +
+                ", user=" + user +
+                ", tournament=" + tournament +
+                ", position=" + position +
+                ", score=" + score +
+                '}';
+    }
 }
