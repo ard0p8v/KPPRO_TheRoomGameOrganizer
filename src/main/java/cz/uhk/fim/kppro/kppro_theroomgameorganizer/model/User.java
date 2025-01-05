@@ -27,6 +27,20 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Result> results;
 
+    public User() {}
+
+    public User(long id, String name, String surname, String username, String email, String password, String role, List<Registration> registrations, List<Result> results) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.registrations = registrations;
+        this.results = results;
+    }
+
     public long getId() {
         return id;
     }
@@ -97,5 +111,20 @@ public class User {
 
     public void setResults(List<Result> results) {
         this.results = results;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", registrations=" + registrations +
+                ", results=" + results +
+                '}';
     }
 }

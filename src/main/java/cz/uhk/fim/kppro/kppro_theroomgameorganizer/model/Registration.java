@@ -36,6 +36,17 @@ public class Registration {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Tournament tournament;
 
+    public Registration() {}
+
+    public Registration(long id, Date date, RegistrationStatus status, String note, User user, Tournament tournament) {
+        this.id = id;
+        this.date = date;
+        this.status = status;
+        this.note = note;
+        this.user = user;
+        this.tournament = tournament;
+    }
+
     public long getId() {
         return id;
     }

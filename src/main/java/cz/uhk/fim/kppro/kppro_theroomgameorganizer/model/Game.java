@@ -26,6 +26,17 @@ public class Game {
     @OneToMany(mappedBy = "game")
     private List<Tournament> tournaments;
 
+    public Game() {}
+
+    public Game(List<Tournament> tournaments, int maxPlayers, String rules, String description, String name, Long id) {
+        this.tournaments = tournaments;
+        this.maxPlayers = maxPlayers;
+        this.rules = rules;
+        this.description = description;
+        this.name = name;
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

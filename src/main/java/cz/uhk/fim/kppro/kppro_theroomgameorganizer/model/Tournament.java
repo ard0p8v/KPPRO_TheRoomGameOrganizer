@@ -46,6 +46,21 @@ public class Tournament {
     @OneToMany(mappedBy = "tournament")
     private List<Result> results;
 
+    public Tournament() {}
+
+    public Tournament(long id, String title, Date date, String location, TournamentType type, TournamentStatus status, int freePlaces, Game game, List<Result> results, List<Registration> registrations) {
+        this.id = id;
+        this.title = title;
+        this.date = date;
+        this.location = location;
+        this.type = type;
+        this.status = status;
+        this.freePlaces = freePlaces;
+        this.game = game;
+        this.results = results;
+        this.registrations = registrations;
+    }
+
     public long getId() {
         return id;
     }
@@ -124,5 +139,21 @@ public class Tournament {
 
     public void setResults(List<Result> results) {
         this.results = results;
+    }
+
+    @Override
+    public String toString() {
+        return "Tournament{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", date=" + date +
+                ", location='" + location + '\'' +
+                ", type=" + type +
+                ", status=" + status +
+                ", freePlaces=" + freePlaces +
+                ", game=" + game +
+                ", registrations=" + registrations +
+                ", results=" + results +
+                '}';
     }
 }

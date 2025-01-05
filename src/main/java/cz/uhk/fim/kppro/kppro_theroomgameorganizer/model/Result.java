@@ -29,6 +29,16 @@ public class Result {
     private int position;
     private int score;
 
+    public Result() {}
+
+    public Result(long id, User user, int position, Tournament tournament, int score) {
+        this.id = id;
+        this.user = user;
+        this.position = position;
+        this.tournament = tournament;
+        this.score = score;
+    }
+
     public long getId() {
         return id;
     }
