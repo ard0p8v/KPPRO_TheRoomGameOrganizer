@@ -36,7 +36,7 @@ public class TournamentServiceTest {
 
         return new Tournament(
                 1L,
-                "Tournament 1",
+                "Turnaj 1",
                 new Date(),
                 "The Room Pelhřimov",
                 TournamentType.turnaj,
@@ -58,7 +58,7 @@ public class TournamentServiceTest {
         Tournament tournament1 = createSampleTournament();
         Tournament tournament2 = createSampleTournament();
         tournament2.setId(2L);
-        tournament2.setTitle("Tournament 2");
+        tournament2.setTitle("Turnaj 2");
 
         when(tournamentRepository.findAll()).thenReturn(List.of(tournament1, tournament2));
 
@@ -81,7 +81,7 @@ public class TournamentServiceTest {
     @Test
     public void testSaveTournament() {
         Tournament tournament = createSampleTournament();
-        tournament.setId(0L);  // ID should be 0 for new entities
+        tournament.setId(0L);
 
         when(tournamentRepository.save(any(Tournament.class))).thenReturn(tournament);
 
