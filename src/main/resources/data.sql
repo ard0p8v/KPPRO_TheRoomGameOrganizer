@@ -1,7 +1,7 @@
 -- Insert data into users table
 INSERT INTO users (name, surname, username, email, password, role) VALUES
     ('Pavel', 'Ardolf', 'pavel.ardolf', 'admin@theroom.cz', 'heslo', 'ADMIN'),
-    ('Petr', 'Svoboda', 'petr.svoboda', 'user@theroom.cz', 'heslo', 'USER'),
+    ('Petr', 'Svoboda', 'petr.svoboda', 'svoboda@gmail.com', 'heslo', 'USER'),
     ('Marie', 'Dvořáková', 'marie.dvorakova', 'marie.dvorakova@example.com', 'heslo', 'USER'),
     ('Josef', 'Černý', 'josef.cerny', 'josef.cerny@example.com', 'heslo', 'USER'),
     ('Eva', 'Procházková', 'eva.prochazkova', 'eva.prochazkova@example.com', 'heslo', 'USER'),

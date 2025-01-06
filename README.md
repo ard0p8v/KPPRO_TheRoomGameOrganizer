@@ -1,5 +1,14 @@
 # KPPRO_TheRoomGameOrganizer
 
+### Uživatelské účty k testování:
+- **ADMIN**: 
+  - username: admin@theroom.cz
+  - password: heslo
+
+- **USER**: 
+  - username: svoboda@gmail.com
+  - password: heslo
+
 ## Popis
 TheRoomGameOrganizer je komplexní aplikace zaměřená na organizování a správu herních turnajů. Je navržena tak, aby usnadnila proces plánování, řízení a sledování turnajů pro různé hry. Aplikace umožňuje uživatelům spravovat své účty, registrovat se na turnaje, sledovat výsledky a mnoho dalšího.
 
