@@ -125,7 +125,6 @@ INSERT INTO results (user_id, tournament_id, position, score) VALUES
 -- Insert data into registrations table
 INSERT INTO registrations (date, status, note, user_id, tournament_id) VALUES
     ('2025-01-25', 'ZRUŠENO', 'Zrušeno z důvodu', 2, 1),
-    ('2025-02-01', 'POTVRZENO', 'Registrace úspěšná', 2, 2),
     ('2025-02-05', 'ČEKAJÍCÍ', 'Čekám na odpověď', 2, 3),
     ('2025-02-10', 'ZRUŠENO', 'Musel jsem zrušit', 2, 4),
     ('2025-02-15', 'POTVRZENO', 'Vše je potvrzeno', 2, 5),

@@ -141,19 +141,4 @@ public class Tournament {
         this.results = results;
     }
 
-    @Override
-    public String toString() {
-        return "Tournament{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", date=" + date +
-                ", location='" + location + '\'' +
-                ", type=" + type +
-                ", status=" + status +
-                ", freePlaces=" + freePlaces +
-                ", game=" + game +
-                ", registrations=" + registrations +
-                ", results=" + results +
-                '}';
-    }
 }

@@ -79,14 +79,4 @@ public class Result {
         this.score = score;
     }
 
-    @Override
-    public String toString() {
-        return "Result{" +
-                "id=" + id +
-                ", user=" + user +
-                ", tournament=" + tournament +
-                ", position=" + position +
-                ", score=" + score +
-                '}';
-    }
 }
